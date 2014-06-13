@@ -1,6 +1,8 @@
 'use strict';
 
-
+function log(a){
+    console.log (a);
+}
 // Declare app level module which depends on filters, and services
 
 
@@ -20,6 +22,7 @@ angular.module('ngCart', [])
 
     .run(['ngCart', function (ngCart) {
 
+
         if (Modernizr.localstorage && angular.isArray(JSON.parse(localStorage.getItem('cart')))) {
             ngCart.setCart(JSON.parse(localStorage.getItem('cart')));
         } else {
@@ -35,6 +38,7 @@ angular.module('ngCart', [])
 
     .service('ngCart', ['ngCartItem', function (ngCartItem) {
 
+
         this.setCart = function (cart) {
             this.$cart = cart;
         }
@@ -43,14 +47,19 @@ angular.module('ngCart', [])
             return this.$cart;
         }
 
-        this.addItem = function (item) {
+        this.addItem = function (id, name, price, quantity, data) {
 
 //            var i =  angular.copy(ngCartItem); // TODO: This might be better achieved with a new constructor
 //            i.setItem(item);
 
+            if (!quantity) quantity = 1;
+
             var i = {
-                item: item,
-                quantity: 1
+                id: id,
+                name: name,
+                price: price,
+                quantity: quantity,
+                data: data
             }
 
             this.$cart.push(i);
@@ -59,32 +68,30 @@ angular.module('ngCart', [])
 
         this.itemInCart = function (itemId) {
             var result = false;
-            angular.forEach(this.$cart, function (value) {
-                if (itemId == value.item.id) result = true;
+            angular.forEach(this.getCart(), function (item) {
+                if (itemId == item.id) result = true;
             });
             return result;
         }
 
        this.totalItems = function () {
-            return  this.$cart.length;
+            return  this.getCart().length;
         }
 
 
        this.totalCost= function () {
             var total = 0;
-            angular.forEach(this.$cart, function (value) {
-                total += (value.item.price * value.quantity);
+            angular.forEach(this.getCart(), function (item) {
+                total += (item.price * item.quantity);
             });
             return total
         }
 
         this.quantity = function (index, offset) {
-            log (index);
-            log (offset);
             var quantity = this.$cart[index].quantity + offset;
             if (quantity < 1) quantity = 1;
             this.$cart[index].quantity = quantity;
-            this.$saveCart(this.$cart);
+            this.$saveCart();
         }
 
         this.removeItem = function (index) {
@@ -98,7 +105,7 @@ angular.module('ngCart', [])
         }
 
         this.$saveCart = function () {
-            if (Modernizr.localstorage)  localStorage.setItem('cart', JSON.stringify(this.$cart));
+            if (Modernizr.localstorage)  localStorage.setItem('cart', JSON.stringify(this.getCart()));
 
         }
 
@@ -119,16 +126,57 @@ angular.module('ngCart', [])
             return this.$item;
         }
 
-
-
-
         this.setItem = function (item){
-                this.$item = item;
+             this.$item = item;
         }
         this.setQuantity = function (int){
-                this.$quantity = int;
+             this.$quantity = int;
         }
 
-    }]);
+    }])
+
+    .controller('CartController',['$scope', 'ngCart', function($scope, ngCart){
+
+        $scope.cart = ngCart;
+
+        $scope.addToCart = function(id, name, price, quantity, data){
+            ngCart.addItem(id, name, price, quantity, data);
+        };
+
+    }])
+
+    .directive('addtocart', function(){
+        return {
+            restrict : 'E',
+            controller : 'CartController',
+            scope: {},
+            transclude: true,
+            templateUrl: '/template/addtocart.html',
+            link:function(scope, element, attrs){
+                element.on('click', function(){
+                    scope.addToCart(attrs.id, attrs.name, attrs.price, attrs.quantity, attrs.data)
+                });
+            }
+        };
+
+    })
+
+    .directive('cart', function(){
+        return {
+            restrict : 'E',
+            controller : 'CartController',
+            scope: {},
+            templateUrl: '/template/cart.html',
+            link:function(scope, element, attrs){
+
+
+            }
+        };
+
+    })
+
+
+
+;
 
 

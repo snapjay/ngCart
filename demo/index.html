@@ -1,9 +1,128 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" ng-app="ngCartDemo">
 <head>
-    <title></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>ngCart</title>
+
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]>
+    <script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        body {
+            padding-top: 50px;
+        }
+
+        .starter-template {
+            padding: 40px 15px;
+            text-align: center;
+        }
+    </style>
+
 </head>
-<body>
+
+<body ng-controller="main">
+
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">ngCart</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="starter-template">
+        <h1>ngCart</h1>
+
+        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a
+            mostly barebones HTML document.</p>
+
+        <div class="row">
+            <div class="col-xs-4" ng-repeat="item in products">
+                <h3>{{ item.name }}</h3>
+                <p>{{ item.snippet }}</p>
+                <p>{{ item.price | currency}}</p>
+
+                <addtocart id="{{ item.id }}" name="{{ item.name }}" price="{{ item.price }}" data="{{ item }}">Add To Cart</addtocart>
+            </div>
+        </div>
+
+        <div>
+
+        </div>
+
+    </div>
+
+
+<div class="row">
+    <div class="col-md-12">
+
+        <cart></cart>
+
+    </div>
+</div>    <!-- /.container -->
+    <script src="/bower_components/angular/angular.js"></script>
+    <script src="/bower_components/modernizr/modernizr.js"></script>
+    <script src="../src/ngcart.js"></script>
+    <script>
+
+        var app = angular.module('ngCartDemo', ['ngCart']);
+
+        app.controller('main', function ($scope) {
+            $scope.products = [
+                {   id: 001,
+                    info: 'naomi',
+                    name: 'Nexus S',
+                    snippet: 'Fast just got faster with Nexus S.',
+                    price: 299
+                },
+                {   id: 002,
+                    info: 'igor',
+                    name: 'Motorola XOOM™ with Wi-Fi',
+                    snippet: 'The Next, Next Generation tablet.',
+                    price: 239
+                },
+                {   id: 003,
+                    info: 'other',
+                    name: 'MOTOROLA XOOM™',
+                    snippet: 'The Next, Next Generation tablet.',
+                    price: 499
+                }
+            ];
+        });
+
+    </script>
 
 </body>
 </html>

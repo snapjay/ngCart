@@ -1,9 +1,36 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
 
-</body>
-</html>
+<div class="table-responsive col-lg-12">
+
+    <table class="table table-striped cart" ng-show="cart.totalItems() > 0">
+
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th>Quantity</th>
+            <th>Amount</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>{{ cart.totalCost()  | currency }}</th>
+        </tr>
+        </tfoot>
+        <tbody>
+        <tr ng-repeat="item in cart.getCart() track by $index">
+            <td><span ng-click="cart.removeItem($index)"  class="glyphicon glyphicon-remove"></span></td>
+            <td>{{ item.name }}</td>
+            <td><span class="glyphicon glyphicon-minus" ng-class="{'disabled':item.quantity==1}" ng-click="cart.quantity($index, -1)" ></span>&nbsp;&nbsp;
+                {{ item.quantity | number }}&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-plus"  ng-click="cart.quantity($index, 1)"></span></td>
+            <td>{{ item.price  | currency}}</td>
+            <td>{{ item.price * item.quantity | currency }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
