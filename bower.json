@@ -1,0 +1,23 @@
+{
+  "name": "Podium Lite",
+  "description": "Podium Lite",
+  "version": "0.0.0",
+  "homepage": "https://github.com/angular/angular-seed",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "1.2.x",
+    "angular-loader": "1.2.x",
+    "angular-mocks": "~1.2.x",
+    "angular-sanitize": "~1.2.x",
+    "bootstrap": ">=3.*",
+    "lodash": ">=2.4.*",
+    "angular-ui-bootstrap": ">=0.*",
+    "angular-ui-router": ">=0.2.*",
+    "angular-paginate-anything":  "git://github.com/snapjay/angular-paginate-anything.git#master",
+    "restangular": ">=1.4.*",
+    "modernizr": ">=2.8.*",
+    "angular-file-upload": "nervgh/angular-file-upload",
+    "angular-translate": ">=2.1.*"
+  }
+}
