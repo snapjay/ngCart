@@ -1,1 +1,9 @@
-<a class="btn btn-lg btn-primary"  ng-transclude></a>
+
+<div ng-hide="inCart()">
+    <a class="btn btn-lg btn-primary"
+       ng-click="ngCart.addItem(attrs.id, attrs.name, attrs.price, attrs.quantity, attrs.data)"
+       ng-transclude></a>
+</div>
+<div ng-show="inCart()">
+    This item is already in your cart
+</div>

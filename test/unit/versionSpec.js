@@ -1,7 +1,12 @@
-/**
- * Created with IntelliJ IDEA.
- * User: Dan Shreim
- * Date: 6/17/14
- * Time: 4:05 PM
- * To change this template use File | Settings | File Templates.
- */
+describe('version', function() {
+    beforeEach(module('ngCart'));
+
+    it('should return current cow', inject(function(version) {
+        expect('cow').toEqual('cow');
+    }));
+
+    it('should return current key', inject(function(key) {
+        expect(key).toEqual('test');
+    }));
+
+});

@@ -1,29 +1,26 @@
 {
-  "name": "podium-lite",
-  "private": true,
+  "name": "ngCart",
+  "private": false,
   "version": "0.0.0",
-  "description": "Podium Lite",
-  "license": "RAW",
+  "description": "ngCart",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/snapjay/ngcart.git"
+  },
   "path": {
     "app": "app"
+  },
+  "author": {
+    "name": "Dan Shreim",
+    "email": "dan@snapjay.com",
+    "url": "http://www.snapjay.com/"
   },
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-contrib-concat": "~0.4.0",
-    "grunt-contrib-jshint": "~0.6.3",
-    "grunt-contrib-nodeunit": "~0.2.0",
     "grunt-contrib-uglify": "~0.2.2",
-    "grunt-contrib-qunit": "~0.4.0",
-    "grunt-contrib-htmlmin": "~0.2.0",
-    "grunt-usemin": "~2.1.1",
     "grunt-contrib-copy": "~0.5.0",
-    "grunt-contrib-cssmin": "~0.9.0",
-    "grunt-s3": "~0.2.0-alpha.3",
-    "grunt-contrib-watch": "~0.6.1",
-    "grunt-contrib-less": "~0.11.0",
-    "grunt-config": "~0.1.5",
-    "grunt-html2js": "~0.2.4",
-    "grunt-replace": "~0.7.7",
-    "grunt-aws-s3": "~0.8.6"
+    "grunt-contrib-watch": "~0.6.1"
   }
 }

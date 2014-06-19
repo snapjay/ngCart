@@ -22,7 +22,6 @@ angular.module('ngCart', [])
 
     .run(['ngCart', function (ngCart) {
 
-
         if (Modernizr.localstorage && angular.isArray(JSON.parse(localStorage.getItem('cart')))) {
             ngCart.setCart(JSON.parse(localStorage.getItem('cart')));
         } else {
@@ -31,13 +30,7 @@ angular.module('ngCart', [])
 
     }])
 
-
-
-
-
-
     .service('ngCart', ['ngCartItem', function (ngCartItem) {
-
 
         this.setCart = function (cart) {
             this.$cart = cart;
@@ -49,37 +42,39 @@ angular.module('ngCart', [])
 
         this.addItem = function (id, name, price, quantity, data) {
 
-//            var i =  angular.copy(ngCartItem); // TODO: This might be better achieved with a new constructor
-//            i.setItem(item);
-
             if (!quantity) quantity = 1;
 
-            var i = {
-                id: id,
-                name: name,
-                price: price,
-                quantity: quantity,
-                data: data
+            var inCart = this.itemInCart(id)
+
+            if (inCart !== false){
+                this.quantity(inCart, quantity);
+            } else {
+            //var i =  angular.copy(ngCartItem); // TODO: This might be better achieved with a new constructor
+           // i.setItem(item);
+                var i = {
+                    id: id,
+                    name: name,
+                    price: price,
+                    quantity: quantity,
+                    data: data
+                }
+                this.$cart.push(i);
             }
 
-            this.$cart.push(i);
-            this.$saveCart(this.$cart);
+           this.$saveCart(this.$cart);
         };
 
         this.itemInCart = function (itemId) {
-            var result = false;
-            angular.forEach(this.getCart(), function (item) {
-                if (itemId == item.id) result = true;
-            });
-            return result;
+            var a=  _.find(this.getCart(), {id:itemId});
+            if (a === undefined) return false
+            else return a;
         }
 
-       this.totalItems = function () {
-            return  this.getCart().length;
+        this.totalItems = function () {
+            return this.getCart().length;
         }
 
-
-       this.totalCost= function () {
+        this.totalCost= function () {
             var total = 0;
             angular.forEach(this.getCart(), function (item) {
                 total += (item.price * item.quantity);
@@ -87,10 +82,10 @@ angular.module('ngCart', [])
             return total
         }
 
-        this.quantity = function (index, offset) {
-            var quantity = this.$cart[index].quantity + offset;
+        this.quantity = function (item, offset) {
+            var quantity = item.quantity + offset;
             if (quantity < 1) quantity = 1;
-            this.$cart[index].quantity = quantity;
+            item.quantity = quantity;
             this.$saveCart();
         }
 
@@ -137,46 +132,58 @@ angular.module('ngCart', [])
 
     .controller('CartController',['$scope', 'ngCart', function($scope, ngCart){
 
-        $scope.cart = ngCart;
+        $scope.scopeCart = ngCart;
 
-        $scope.addToCart = function(id, name, price, quantity, data){
-            ngCart.addItem(id, name, price, quantity, data);
-        };
 
     }])
 
-    .directive('addtocart', function(){
+    .directive('addtocart', ['ngCart', function(ngCart){
         return {
             restrict : 'E',
-            controller : 'CartController',
+            controller : ['$scope',  function($scope){
+                $scope.ngCart = ngCart;
+            }],
             scope: {},
             transclude: true,
             templateUrl: '/template/addtocart.html',
             link:function(scope, element, attrs){
-                element.on('click', function(){
-                    scope.addToCart(attrs.id, attrs.name, attrs.price, attrs.quantity, attrs.data)
-                });
+                scope.attrs = attrs;
+                scope.inCart = function(){
+                    return ngCart.itemInCart(attrs.id);
+                }
             }
         };
+    }])
 
-    })
-
-    .directive('cart', function(){
+    .directive('cart', ['ngCart', function(ngCart){
         return {
             restrict : 'E',
-            controller : 'CartController',
+            controller : ['$scope',  function($scope){
+                $scope.ngCart = ngCart;
+            }],
             scope: {},
             templateUrl: '/template/cart.html',
             link:function(scope, element, attrs){
 
-
             }
         };
+    }])
 
-    })
+    .directive('summary', ['ngCart', function(ngCart){
+        return {
+            restrict : 'E',
+            controller : ['$scope',  function($scope){
+                $scope.ngCart = ngCart;
+            }],
+            scope: {},
+            transclude: true,
+            templateUrl: '/template/summary.html'
 
+        };
+    }])
 
+    .value('version', '0.1')
+    .value('key', 'test');
 
-;
 
 

@@ -1,7 +1,7 @@
 
 <div class="table-responsive col-lg-12">
 
-    <table class="table table-striped cart" ng-show="cart.totalItems() > 0">
+    <table class="table table-striped ngCart cart" ng-show="ngCart.totalItems() > 0">
 
         <thead>
         <tr>
@@ -18,19 +18,28 @@
             <th></th>
             <th></th>
             <th></th>
-            <th>{{ cart.totalCost()  | currency }}</th>
+            <th>{{ ngCart.totalCost() | currency }}</th>
         </tr>
         </tfoot>
         <tbody>
-        <tr ng-repeat="item in cart.getCart() track by $index">
-            <td><span ng-click="cart.removeItem($index)"  class="glyphicon glyphicon-remove"></span></td>
+        <tr ng-repeat="item in ngCart.getCart() track by $index">
+            <td><span ng-click="ngCart.removeItem($index)" class="glyphicon glyphicon-remove"></span></td>
             <td>{{ item.name }}</td>
-            <td><span class="glyphicon glyphicon-minus" ng-class="{'disabled':item.quantity==1}" ng-click="cart.quantity($index, -1)" ></span>&nbsp;&nbsp;
+            <td><span class="glyphicon glyphicon-minus" ng-class="{'disabled':item.quantity==1}"
+                      ng-click="ngCart.quantity(item, -1)"></span>&nbsp;&nbsp;
                 {{ item.quantity | number }}&nbsp;&nbsp;
-                <span class="glyphicon glyphicon-plus"  ng-click="cart.quantity($index, 1)"></span></td>
-            <td>{{ item.price  | currency}}</td>
+                <span class="glyphicon glyphicon-plus" ng-click="ngCart.quantity(item, 1)"></span></td>
+            <td>{{ item.price | currency}}</td>
             <td>{{ item.price * item.quantity | currency }}</td>
         </tr>
         </tbody>
     </table>
 </div>
+<style>
+    .ngCart.cart span[ng-click] {
+        cursor: pointer;
+    }
+    .ngCart.cart .glyphicon.disabled {
+        color:#aaa;
+    }
+</style>
