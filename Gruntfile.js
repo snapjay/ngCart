@@ -15,17 +15,17 @@ module.exports = function (grunt) {
             },
             dist: {
                 src: ['src/*.js'],
-                dest: "dist/ngcart.js"
+                dest: "dist/ngCart.js"
             }
         },
 
         uglify: {
             options: {
-                banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+                banner: '/*! <%= pkg.name %> v<%= pkg.version %> */\n <%= pkg.url %>'
             },
             dist: {
-                src: 'dist/ngcart.js',
-                dest: "dist/ngcart.js"
+                src: 'dist/ngCart.js',
+                dest: "dist/ngCart.js"
             }
         },
 
