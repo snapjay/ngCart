@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "description": "ngCart",
   "license": "MIT",
+  "tags":"AngularJS, directive, module, shopping cart, shopping basket"
   "repository": {
     "type": "git",
     "url": "https://github.com/snapjay/ngcart.git"
