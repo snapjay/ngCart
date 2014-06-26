@@ -6,6 +6,13 @@ Really simple shopping cart for AngularJS
 AngularJS module consists of a set of directives to help you quickly impliment a shopping cart on your AngularJS app
 
 
+Demo
+----
+
+To view a demo go here:
+http://snapjay.github.io/ngcart/
+You can see all 3 directive active on the page - Add items to the cart and change the quantities.
+
 Setup
 -----
 1. Get the file
