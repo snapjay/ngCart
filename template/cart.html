@@ -1,7 +1,12 @@
 
-<div class="table-responsive col-lg-12">
 
-    <table class="table table-striped ngCart cart" ng-show="ngCart.totalItems() > 0">
+<div class="alert alert-warning" role="alert" ng-show="ngCart.totalItems() === 0">
+    Your Cart is empty
+</div>
+
+<div class="table-responsive col-lg-12" ng-show="ngCart.totalItems() > 0">
+
+    <table class="table table-striped ngCart cart">
 
         <thead>
         <tr>
