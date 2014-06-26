@@ -2,7 +2,7 @@
   "name": "ngCart",
   "private": false,
   "version": "0.0.1",
-  "description": "ngCart",
+  "description": "Really simple shopping cart for AngularJS",
   "license": "MIT",
   "tags":"AngularJS, directive, module, shopping cart, shopping basket"
   "repository": {
