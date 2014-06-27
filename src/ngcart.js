@@ -43,7 +43,8 @@ angular.module('ngCart', [])
         }
 
         this.getShipping = function(){
-            return  this.getCart().shipping ;
+            if (this.getCart().length == 0) return 0;
+            return  this.getCart().shipping;
         }
 
 
@@ -168,7 +169,12 @@ angular.module('ngCart', [])
             controller : ['$scope',  function($scope){
                 $scope.ngCart = ngCart;
             }],
-            scope: {},
+            scope: {
+                id:'@',
+                name:'@',
+                price:'@',
+                data:'='
+            },
             transclude: true,
             templateUrl: '/template/addtocart.html',
             link:function(scope, element, attrs){
