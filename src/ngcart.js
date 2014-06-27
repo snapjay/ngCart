@@ -12,6 +12,9 @@ angular.module('ngCart', [])
 
     .provider('$ngCart', function () {
 
+        var shipping = false;
+        var tax = false;
+
         this.$get = function () {
 
         };
@@ -30,6 +33,24 @@ angular.module('ngCart', [])
 
     .service('ngCart', ['ngCartItem', function (ngCartItem) {
 
+
+        this.setShipping = function(shipping){
+            this.$cart.shipping = shipping;
+        }
+
+        this.setTax = function(tax){
+            this.$cart.tax = tax;
+        }
+
+        this.getShipping = function(){
+            return  this.getCart().shipping ;
+        }
+
+
+        this.getTax = function(){
+            return ((this.getSubTotal()/100) * this.getCart().tax );
+        }
+
         this.setCart = function (cart) {
             this.$cart = cart;
         }
@@ -41,6 +62,8 @@ angular.module('ngCart', [])
         this.addItem = function (id, name, price, quantity, data) {
 
             if (!quantity) quantity = 1;
+            quantity = parseInt(quantity);
+            price = parseInt(price);
 
             var inCart = this.itemInCart(id)
 
@@ -58,7 +81,6 @@ angular.module('ngCart', [])
                 }
                 this.$cart.push(i);
             }
-
            this.$saveCart(this.$cart);
         };
 
@@ -72,12 +94,17 @@ angular.module('ngCart', [])
             return this.getCart().length;
         }
 
-        this.totalCost= function () {
+        this.getSubTotal = function(){
             var total = 0;
             angular.forEach(this.getCart(), function (item) {
                 total += (item.price * item.quantity);
             });
-            return total
+            return total;
+        }
+
+
+        this.totalCost= function () {
+            return this.getSubTotal() + this.getShipping() + this.getTax();
         }
 
         this.quantity = function (item, offset) {

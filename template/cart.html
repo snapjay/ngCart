@@ -1,7 +1,7 @@
 
 
 <div class="alert alert-warning" role="alert" ng-show="ngCart.totalItems() === 0">
-    Your Cart is empty
+    Your cart is empty
 </div>
 
 <div class="table-responsive col-lg-12" ng-show="ngCart.totalItems() > 0">
@@ -18,11 +18,25 @@
         </tr>
         </thead>
         <tfoot>
+        <tr ng-show="ngCart.getTax()">
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>Tax ({{ ngCart.getCart().tax }}%):</th>
+            <th>{{ ngCart.getTax() | currency }}</th>
+        </tr>
+        <tr ng-show="ngCart.getShipping()">
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>Shipping:</th>
+            <th>{{ ngCart.getShipping() | currency }}</th>
+        </tr>
         <tr>
             <th></th>
             <th></th>
             <th></th>
-            <th></th>
+            <th>Total:</th>
             <th>{{ ngCart.totalCost() | currency }}</th>
         </tr>
         </tfoot>
