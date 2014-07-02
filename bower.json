@@ -7,8 +7,11 @@
   "private": false,
   "dependencies": {
     "angular": "1.2.x",
-    "angular-mocks": "1.2.x",
     "modernizr": ">=2.8.*",
     "lodash": ">=2.4.*"
+  },
+
+    "devDependencies": {
+        "angular-mocks": "1.2.x"
   }
 }

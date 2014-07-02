@@ -105,7 +105,9 @@ angular.module('ngCart', [])
 
 
         this.totalCost= function () {
-            return this.getSubTotal() + this.getShipping() + this.getTax();
+            var shipping = (!this.getShipping() ? 0 : this.getShipping());
+            var tax = (!this.getTax() ? 0 : this.getTax());
+            return this.getSubTotal() + shipping + tax;
         }
 
         this.quantity = function (item, offset) {
