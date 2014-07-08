@@ -10,7 +10,7 @@ Demo
 ----
 
 To view a demo go here:
-http://snapjay.github.io/ngcart/
+http://ngcart.snapjay.com/
 You can see all 3 directive active on the page - Add items to the cart and change the quantities.
 
 Setup
