@@ -21,11 +21,15 @@ angular.module('ngCart', [])
 
     })
 
-    .run(['ngCart', function (ngCart) {
+    .run(['ngCart','ngCartItem', function (ngCart, ngCartItem) {
 
-        if (Modernizr.localstorage && angular.isArray(JSON.parse(localStorage.getItem('cart')))) {
-//            ngCart.setCart(JSON.parse(localStorage.getItem('cart')));
-            ngCart.init();
+
+
+        if (Modernizr.localstorage && angular.isObject(JSON.parse(localStorage.getItem('cart')))) {
+
+
+            ngCart.$restoreCart(JSON.parse(localStorage.getItem('cart')));
+
         } else {
             ngCart.init();
         }
@@ -50,10 +54,7 @@ angular.module('ngCart', [])
 
         this.addItem = function (id, name, price, quantity, data) {
 
-
-
             var inCart = this.itemInCart(id);
-
 
             if (inCart !== false){
                 this.quantity(inCart.setQuantity(1, true));
@@ -61,7 +62,7 @@ angular.module('ngCart', [])
                 this.$cart.items.push(new ngCartItem(id, name, price, quantity, data));
             }
 
-            this.$saveCart(this.$cart);
+            this.$saveCart();
         };
 
 
@@ -124,13 +125,25 @@ angular.module('ngCart', [])
 
 
         this.removeItem = function (index) {
-            this.$cart.splice(index, 1);
-            this.$saveCart(this.$cart);
+            this.$cart.items.splice(index, 1);
+            this.$saveCart();
         }
 
         this.empty = function () {
             this.$cart = [];
             if (Modernizr.localstorage)  localStorage.removeItem('cart');
+        }
+
+
+
+        this.$restoreCart = function(sessionStore){
+            var _self = this;
+            _self.init();
+            _self.$cart.shpping = sessionStore.shipping;
+            _self.$cart.tax = sessionStore.tax;
+            angular.forEach(sessionStore.items, function (item) {
+                _self.$cart.items.push(new ngCartItem(item._id,  item._name, item._price, item._quantity, item._data));
+            });
         }
 
         this.$saveCart = function () {
@@ -140,7 +153,7 @@ angular.module('ngCart', [])
 
     }])
 
-    .factory('ngCartItem', [ function () {
+    .factory('ngCartItem', ['ngCart', function (ngCart) {
 
         var item = function (id, name, price, quantity, data) {
             this.setId(id);
@@ -207,6 +220,8 @@ angular.module('ngCart', [])
                 this._quantity = 1;
                 console.info('Quantity must be an integer and was defaulted to 1');
             }
+            ngCart.$saveCart();
+
         }
 
         item.prototype.getQuantity = function(){
@@ -289,3 +304,6 @@ angular.module('ngCart', [])
     }])
 
     .value('version', '0.2');
+
+
+
