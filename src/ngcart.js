@@ -24,28 +24,72 @@ angular.module('ngCart', [])
     .run(['ngCart', function (ngCart) {
 
         if (Modernizr.localstorage && angular.isArray(JSON.parse(localStorage.getItem('cart')))) {
-            ngCart.setCart(JSON.parse(localStorage.getItem('cart')));
+//            ngCart.setCart(JSON.parse(localStorage.getItem('cart')));
+            ngCart.init();
         } else {
-            ngCart.setCart([]);
+            ngCart.init();
         }
+
+
 
     }])
 
     .service('ngCart', ['ngCartItem', function (ngCartItem) {
 
 
+        this.init = function(){
+
+            this.$cart = {
+                shipping : null,
+                tax : null,
+                items : []
+            };
+
+        }
+
+
+        this.addItem = function (id, name, price, quantity, data) {
+
+
+
+            var inCart = this.itemInCart(id);
+
+
+            if (inCart !== false){
+                this.quantity(inCart.setQuantity(1, true));
+            } else {
+                this.$cart.items.push(new ngCartItem(id, name, price, quantity, data));
+            }
+
+            this.$saveCart(this.$cart);
+        };
+
+
+        this.itemInCart = function (itemId) {
+
+            var a = _.find(this.getCart().items, {_id:itemId}); // This should really call .getId() - not read the private property
+            if (a === undefined) return false
+            else return a;
+        }
+
+
+
+
         this.setShipping = function(shipping){
             this.$cart.shipping = shipping;
         }
+
+        this.getShipping = function(){
+            if (this.getCart().items.length == 0) return 0;
+            return  this.getCart().shipping;
+        }
+
+
 
         this.setTax = function(tax){
             this.$cart.tax = tax;
         }
 
-        this.getShipping = function(){
-            if (this.getCart().length == 0) return 0;
-            return  this.getCart().shipping;
-        }
 
 
         this.getTax = function(){
@@ -60,62 +104,24 @@ angular.module('ngCart', [])
             return this.$cart;
         }
 
-        this.addItem = function (id, name, price, quantity, data) {
-
-            if (!quantity) quantity = 1;
-            quantity = parseInt(quantity);
-            price = parseInt(price);
-
-            var inCart = this.itemInCart(id)
-
-            if (inCart !== false){
-                this.quantity(inCart, quantity);
-            } else {
-            //var i =  angular.copy(ngCartItem); // TODO: This might be better achieved with a new constructor
-           // i.setItem(item);
-                var i = {
-                    id: id,
-                    name: name,
-                    price: price,
-                    quantity: quantity,
-                    data: data
-                }
-                this.$cart.push(i);
-            }
-           this.$saveCart(this.$cart);
-        };
-
-        this.itemInCart = function (itemId) {
-            var a=  _.find(this.getCart(), {id:itemId});
-            if (a === undefined) return false
-            else return a;
-        }
 
         this.totalItems = function () {
-            return this.getCart().length;
+            return this.getCart().items.length;
         }
 
         this.getSubTotal = function(){
             var total = 0;
-            angular.forEach(this.getCart(), function (item) {
-                total += (item.price * item.quantity);
+            angular.forEach(this.getCart().items, function (item) {
+                total += item.getTotal();
             });
             return total;
         }
 
 
         this.totalCost= function () {
-            var shipping = (!this.getShipping() ? 0 : this.getShipping());
-            var tax = (!this.getTax() ? 0 : this.getTax());
-            return this.getSubTotal() + shipping + tax;
+            return this.getSubTotal() + this.getShipping() + this.getTax();
         }
 
-        this.quantity = function (item, offset) {
-            var quantity = item.quantity + offset;
-            if (quantity < 1) quantity = 1;
-            item.quantity = quantity;
-            this.$saveCart();
-        }
 
         this.removeItem = function (index) {
             this.$cart.splice(index, 1);
@@ -134,31 +140,97 @@ angular.module('ngCart', [])
 
     }])
 
-    .service('ngCartItem', [ function () {
-        this.$item = null;        
-        this.$quantity = 1;
-        
-        this.getTotal = function(){
-            return this.$quantity * this.$item.price;
-        }
-        this.getQuantity = function(){
-            return this.$quantity;
+    .factory('ngCartItem', [ function () {
+
+        var item = function (id, name, price, quantity, data) {
+            this.setId(id);
+            this.setName(name);
+            this.setPrice(price);
+            this.setQuantity(quantity);
+            this.setData(data);
+        };
+
+
+        item.prototype.setId = function(id){
+            if (id)  this._id = id;
+            else {
+                console.error('A ID must be provided');
+            }
         }
 
-        this.getItem = function(){
-            return this.$item;
+        item.prototype.getId = function(){
+            return this._id;
         }
 
-        this.setItem = function (item){
-             this.$item = item;
+
+        item.prototype.setName = function(name){
+            if (name)  this._name = name;
+            else {
+                console.error('A name must be provided');
+            }
         }
-        this.setQuantity = function (int){
-             this.$quantity = int;
+        item.prototype.getName = function(){
+            return this._name;
         }
+
+        item.prototype.setPrice = function(price){
+            var price = parseFloat(price);
+            if (price) {
+                if (price <= 0) {
+                    console.error('A price must be over 0');
+                }
+                this._price = (price);
+            } else {
+                console.error('A price must be provided');
+            }
+        }
+        item.prototype.getPrice = function(){
+            return this._price;
+        }
+
+
+        item.prototype.setQuantity = function(quantity, relative){
+
+
+            var quantity = parseInt(quantity);
+            if (quantity % 1 === 0){
+                if (relative === true){
+                    this._quantity  += quantity;
+                    if (this._quantity < 1) this._quantity = 1;
+
+                } else {
+                    this._quantity = quantity;
+                }
+
+
+            } else {
+                this._quantity = 1;
+                console.info('Quantity must be an integer and was defaulted to 1');
+            }
+        }
+
+        item.prototype.getQuantity = function(){
+            return this._quantity;
+        }
+
+        item.prototype.setData = function(data){
+            if (data) this._data = data;
+        }
+
+        item.prototype.getData = function(){
+            if (this._data) return this._data;
+            else console.info('This item has no data');
+        }
+
+        item.prototype.getTotal = function(){
+            return this.getQuantity() * this.getPrice();
+        }
+
+        return item;
 
     }])
 
-    .controller('CartController',['$scope', 'ngCart', function($scope, ngCart){
+    .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
 
         $scope.scopeCart = ngCart;
 
@@ -174,6 +246,7 @@ angular.module('ngCart', [])
             scope: {
                 id:'@',
                 name:'@',
+                quantity:'@',
                 price:'@',
                 data:'='
             },
@@ -215,8 +288,4 @@ angular.module('ngCart', [])
         };
     }])
 
-    .value('version', '0.1')
-    .value('key', 'test');
-
-
-
+    .value('version', '0.2');
