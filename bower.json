@@ -1,8 +1,10 @@
 {
   "name": "ngCart",
   "description": "Shopping Cart built for AngularJS",
-  "version": "0.0.0",
-  "homepage": "https://github.com/snapjay/ngcart",
+  "keywords": "AngularJS, module, directive, shopping cart, e-commerce, cart, basket, shopping",
+  "authors": {"name":"Dan Shreim", "email":"dan@snapjay.com>", "homepage":"http://www.snapjay.com/"},
+  "version": "0.0.1",
+  "homepage": "http://ngcart.snapjay.com",
   "license": "MIT",
   "private": false,
   "dependencies": {
