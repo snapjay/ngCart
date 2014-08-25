@@ -1,8 +1,5 @@
 'use strict';
 
-function log(a){
-    console.log (a);
-}
 
 angular.module('ngCart', [])
 
@@ -25,7 +22,7 @@ angular.module('ngCart', [])
 
 
 
-        if (Modernizr.localstorage && angular.isObject(JSON.parse(localStorage.getItem('cart')))) {
+        if (angular.isObject(JSON.parse(localStorage.getItem('cart')))) {
 
 
             ngCart.$restoreCart(JSON.parse(localStorage.getItem('cart')));
@@ -131,7 +128,7 @@ angular.module('ngCart', [])
 
         this.empty = function () {
             this.$cart = [];
-            if (Modernizr.localstorage)  localStorage.removeItem('cart');
+            localStorage.removeItem('cart');
         }
 
 
@@ -147,13 +144,13 @@ angular.module('ngCart', [])
         }
 
         this.$saveCart = function () {
-            if (Modernizr.localstorage)  localStorage.setItem('cart', JSON.stringify(this.getCart()));
+            localStorage.setItem('cart', JSON.stringify(this.getCart()));
 
         }
 
     }])
 
-    .factory('ngCartItem', ['ngCart', function (ngCart) {
+    .factory('ngCartItem', [function () {
 
         var item = function (id, name, price, quantity, data) {
             this.setId(id);
@@ -220,7 +217,6 @@ angular.module('ngCart', [])
                 this._quantity = 1;
                 console.info('Quantity must be an integer and was defaulted to 1');
             }
-            ngCart.$saveCart();
 
         }
 

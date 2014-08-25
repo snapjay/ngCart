@@ -15,21 +15,18 @@ You can see all 3 directive active on the page - Add items to the cart and chang
 
 Setup
 -----
-1. Get the file
-    * Download and copy the  `dist/ngCart.js` file
-    * git clone https://github.com/snapjay/ngcart.git
-    * bower install https://github.com/snapjay/ngcart.git
+1. Get the package:
+    * bower install ngcart
 
 2. Include the  `dist/ngCart.js` file in your index.html
-3. Include add `ngCart.js` as  a dependency in you app
+3. Include add `ngCart` as a dependency in your app in the angular.module
 
 Something like this:
 ```
 <!doctype html>
 <html ng-app="myApp">
 <head>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
-    <script src="js/angular-ui-router.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
     <script>
         var myApp = angular.module('myApp', ['ngCart']);
     </script>
@@ -93,7 +90,7 @@ The version number is determined from the `package.json` file inside the project
 
 Download on Github
 ------------------
-Version 0.0.1: https://github.com/snapjay/ngcart
+https://github.com/snapjay/ngCart.git
 
 
 

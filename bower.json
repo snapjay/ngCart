@@ -9,7 +9,6 @@
   "private": false,
   "dependencies": {
     "angular": "1.2.x",
-    "modernizr": ">=2.8.*",
     "lodash": ">=2.4.*"
   },
 
