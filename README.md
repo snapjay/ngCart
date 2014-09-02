@@ -56,6 +56,7 @@ Renders an 'Add To Cart' Button
 | *id  | Unique identifier for this item.  |
 | *name | Text description of item |
 | *price | Numerical value representing the value of the item|
+| quantity | Numerical value representing the quantity of the item to add to cart, defaults to 1|
 | data | This can be an object that may store additional information about the item to be uses later e.g. image, options etc. |
 
 *Required Attributes
