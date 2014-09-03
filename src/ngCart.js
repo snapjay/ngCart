@@ -240,8 +240,8 @@ angular.module('ngCart', [])
 
 
             get: function (key) {
-                if ($window.sessionStorage[key]) {
-                    return angular.fromJson($window.sessionStorage[key]);
+                if ($window.localStorage [key]) {
+                    return angular.fromJson($window.localStorage [key]);
                 }
                 return false;
 
@@ -251,11 +251,11 @@ angular.module('ngCart', [])
             set: function (key, val) {
 
                 if (val === undefined) {
-                    $window.sessionStorage.removeItem(key);
+                    $window.localStorage .removeItem(key);
                 } else {
-                    $window.sessionStorage[key] = angular.toJson(val);
+                    $window.localStorage [key] = angular.toJson(val);
                 }
-                return $window.sessionStorage[key];
+                return $window.localStorage [key];
             }
         }
     }])
