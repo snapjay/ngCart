@@ -55,9 +55,10 @@ angular.module('ngCart', [])
             if (inCart !== false){
                 this.quantity(inCart.setQuantity(1, true));
             } else {
-                this.$cart.items.push(new ngCartItem(id, name, price, quantity, data));
+                var newItem = new ngCartItem(id, name, price, quantity, data)
+                this.$cart.items.push(newItem);
             }
-            $rootScope.$broadcast('ngCart:itemAdded', {});
+            $rootScope.$broadcast('ngCart:itemAdded', newItem);
             $rootScope.$broadcast('ngCart:change', {});
         };
 
