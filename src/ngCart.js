@@ -11,7 +11,6 @@ angular.module('ngCart', [])
 
         var shipping = false;
         var tax = false;
-
         this.$get = function () {
 
         };
@@ -20,11 +19,9 @@ angular.module('ngCart', [])
 
     .run(['$rootScope', 'ngCart','ngCartItem', 'store', function ($rootScope, ngCart, ngCartItem, store) {
 
-
         $rootScope.$on('ngCart:change', function(){
             ngCart.$save();
         });
-
 
         if (angular.isObject(JSON.parse(store.get('cart')))) {
             ngCart.$restore(JSON.parse(store.get('cart')));
@@ -33,12 +30,9 @@ angular.module('ngCart', [])
             ngCart.init();
         }
 
-
-
     }])
 
     .service('ngCart', ['$rootScope', 'ngCartItem', 'store', function ($rootScope, ngCartItem, store) {
-
 
         this.init = function(){
             this.$cart = {
