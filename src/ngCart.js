@@ -126,9 +126,11 @@ angular.module('ngCart', [])
             _self.init();
             _self.$cart.shipping = storedCart.shipping;
             _self.$cart.tax = storedCart.tax;
+
             angular.forEach(storedCart.items, function (item) {
                 _self.$cart.items.push(new ngCartItem(item._id,  item._name, item._price, item._quantity, item._data));
             });
+            this.$save();
         }
 
         this.$save = function () {
@@ -230,8 +232,6 @@ angular.module('ngCart', [])
     .service('store', ['$window', function ($window) {
 
         return {
-
-
 
             get: function (key) {
                 if ($window.localStorage [key]) {
