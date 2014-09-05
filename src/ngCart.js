@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('ngCart', [])
+angular.module('ngCart', ['ngCart.directives'])
 
     .config([function () {
 
@@ -259,50 +259,6 @@ angular.module('ngCart', [])
         $scope.ngCart = ngCart;
 
 
-    }])
-
-    .directive('addtocart', ['ngCart', function(ngCart){
-        return {
-            restrict : 'E',
-            controller : 'CartController',
-            scope: {
-                id:'@',
-                name:'@',
-                quantity:'@',
-                price:'@',
-                data:'='
-            },
-            transclude: true,
-            templateUrl: 'template/addtocart.html',
-            link:function(scope, element, attrs){
-                scope.attrs = attrs;
-                scope.inCart = function(){
-                    return ngCart.itemInCart(attrs.id);
-                }
-            }
-        };
-    }])
-
-    .directive('cart', ['ngCart', function(ngCart){
-        return {
-            restrict : 'E',
-            controller : 'CartController',
-            scope: {},
-            templateUrl: 'template/cart.html',
-            link:function(scope, element, attrs){
-
-            }
-        };
-    }])
-
-    .directive('summary', ['ngCart', function(ngCart){
-        return {
-            restrict : 'E',
-            controller : 'CartController',
-            scope: {},
-            transclude: true,
-            templateUrl: 'template/summary.html'
-        };
     }])
 
     .value('version', '0.0.1-rc.2');
