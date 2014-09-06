@@ -24,7 +24,7 @@ angular.module('ngCart.directives', [])
                 data:'='
             },
             transclude: true,
-            templateUrl: 'template/addtocart.html',
+            templateUrl: 'template/ngCart/addtocart.html',
             link:function(scope, element, attrs){
                 scope.attrs = attrs;
                 scope.inCart = function(){
@@ -39,7 +39,7 @@ angular.module('ngCart.directives', [])
             restrict : 'E',
             controller : 'CartController',
             scope: {},
-            templateUrl: 'template/cart.html',
+            templateUrl: 'template/ngCart/cart.html',
             link:function(scope, element, attrs){
 
             }
@@ -52,7 +52,7 @@ angular.module('ngCart.directives', [])
             controller : 'CartController',
             scope: {},
             transclude: true,
-            templateUrl: 'template/summary.html'
+            templateUrl: 'template/ngCart/summary.html'
         };
     }])
 

@@ -116,7 +116,7 @@ angular.module('ngCart', ['ngCart.directives'])
         }
 
         this.empty = function () {
-            this.$cart = [];
+            this.$cart.items = [];
             localStorage.removeItem('cart');
         }
 
@@ -255,10 +255,7 @@ angular.module('ngCart', ['ngCart.directives'])
     }])
 
     .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
-
         $scope.ngCart = ngCart;
-
-
     }])
 
     .value('version', '0.0.1-rc.2');
