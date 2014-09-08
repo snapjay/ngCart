@@ -44,9 +44,9 @@ angular.module('ngCart', ['ngCart.directives'])
 
         this.addItem = function (id, name, price, quantity, data) {
 
-            var inCart = this.itemInCart(id);
+            var inCart = this.getItemById(id);
 
-            if (inCart !== false){
+            if (typeof inCart === 'object'){
                 this.quantity(inCart.setQuantity(1, true));
             } else {
                 var newItem = new ngCartItem(id, name, price, quantity, data)
@@ -56,11 +56,16 @@ angular.module('ngCart', ['ngCart.directives'])
             $rootScope.$broadcast('ngCart:change', {});
         };
 
-        this.itemInCart = function (itemId) {
+        this.getItemById = function (itemId) {
+            var items = this.getCart().items;
 
-            var a = _.find(this.getCart().items, {_id:itemId}); // This should really call .getId() - not read the private property
-            if (a === undefined) return false
-            else return a;
+            var build;
+            angular.forEach(items, function (item) {
+                if  (item.getId() === itemId) {
+                    build = item;
+                }
+            });
+            return build;
         }
 
         this.setShipping = function(shipping){
