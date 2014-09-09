@@ -23,8 +23,8 @@ angular.module('ngCart', ['ngCart.directives'])
             ngCart.$save();
         });
 
-        if (angular.isObject(JSON.parse(store.get('cart')))) {
-            ngCart.$restore(JSON.parse(store.get('cart')));
+        if (angular.isObject(store.get('cart'))) {
+            ngCart.$restore(store.get('cart'));
 
         } else {
             ngCart.init();
@@ -240,7 +240,8 @@ angular.module('ngCart', ['ngCart.directives'])
 
             get: function (key) {
                 if ($window.localStorage [key]) {
-                    return angular.fromJson($window.localStorage [key]);
+                    var cart = angular.fromJson($window.localStorage [key]);
+                    return JSON.parse(cart);
                 }
                 return false;
 
