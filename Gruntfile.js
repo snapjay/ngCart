@@ -31,12 +31,17 @@ module.exports = function (grunt) {
 
         karma: {
             unit: {
-                configFile: 'config/karma.conf.js',
+                configFile: 'test/karma.conf.js',
                 background: true
             },
             once: {
-                configFile: 'config/karma.conf.js',
+                configFile: 'test/karma.conf.js',
                 singleRun: true
+            },
+            travis: {
+                configFile: 'config/karma.conf.js',
+                singleRun: true,
+                browsers: ['PhantomJS']
             }
         },
 
@@ -55,12 +60,13 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-watch');
-  //  grunt.loadNpmTasks('grunt-karma');
+    grunt.loadNpmTasks('grunt-karma');
 
 
     grunt.registerTask('build', ['concat', 'uglify']);
     grunt.registerTask('devmode', ['karma:unit', 'watch']);
-    grunt.registerTask('test', ['karma:unit']);
+    grunt.registerTask('testunit', ['karma:unit']);
+    grunt.registerTask('test', ['karma:travis']);
 
 
 };
