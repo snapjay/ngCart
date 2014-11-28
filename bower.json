@@ -8,8 +8,7 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
-    "angular": ">=1.2.x",
-    "lodash": ">=2.4.*"
+    "angular": ">=1.2.x"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.x"
