@@ -264,4 +264,4 @@ angular.module('ngCart', ['ngCart.directives'])
         $scope.ngCart = ngCart;
     }])
 
-    .value('version', '0.0.1-rc.2');
+    .value('version', '0.0.2-rc.1');

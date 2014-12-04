@@ -3,8 +3,6 @@
 
 angular.module('ngCart.directives', [])
 
-
-
     .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
 
         $scope.ngCart = ngCart;
