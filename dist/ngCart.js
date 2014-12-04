@@ -3,8 +3,6 @@
 
 angular.module('ngCart.directives', [])
 
-
-
     .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
 
         $scope.ngCart = ngCart;
@@ -322,4 +320,4 @@ angular.module('ngCart', ['ngCart.directives'])
         $scope.ngCart = ngCart;
     }])
 
-    .value('version', '0.0.1-rc.2');
+    .value('version', '0.0.2-rc.1');
