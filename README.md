@@ -47,7 +47,7 @@ Something like this:
 Renders an 'Add To Cart' Button
 
 ```
-<addtocart id="{{ item.id }}" name="{{ item.name }}" price="{{ item.price }}" data="item">Add To Cart</addtocart>
+<ngcart-addtocart id="{{ item.id }}" name="{{ item.name }}" price="{{ item.price }}" data="item">Add To Cart</ngcart-addtocart>
 ```
 
 
@@ -66,7 +66,7 @@ Renders an 'Add To Cart' Button
 Renders a view of the cart
 
 ```
-<cart></cart>
+<ngcart-cart></ngcart-cart>
 ```
 
 
@@ -75,7 +75,7 @@ Renders a view of the cart
 
 Renders a summary  of the content of the cart (Typically used in the header bar of a website
 ```
-<summary></summary>
+<ngcart-summary></ngcart-summary>
 ```
 
 
