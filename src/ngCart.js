@@ -47,7 +47,8 @@ angular.module('ngCart', ['ngCart.directives'])
             var inCart = this.getItemById(id);
 
             if (typeof inCart === 'object'){
-                this.quantity(inCart.setQuantity(1, true));
+                //Update quantity of an item if it's already in the cart
+                inCart.setQuantity(quantity, false);
             } else {
                 var newItem = new ngCartItem(id, name, price, quantity, data)
                 this.$cart.items.push(newItem);
@@ -264,4 +265,4 @@ angular.module('ngCart', ['ngCart.directives'])
         $scope.ngCart = ngCart;
     }])
 
-    .value('version', '0.0.2-rc.1');
+    .value('version', '0.0.1-rc.2');
