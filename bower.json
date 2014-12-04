@@ -3,7 +3,7 @@
   "description": "Shopping Cart built for AngularJS",
   "keywords": ["AngularJS", "module", "directive", "shopping cart", "e-commerce", "cart", "basket", "shopping"],
   "authors": {"name":"Dan Shreim", "email":"dan@snapjay.com>", "homepage":"http://www.snapjay.com/"},
-  "version": "0.0.2-rc.1",
+  "version": "0.0.2-rc.3",
   "homepage": "http://ngcart.snapjay.com",
   "license": "MIT",
   "main": "dist/ngCart.js",
