@@ -10,7 +10,7 @@ angular.module('ngCart.directives', [])
 
     }])
 
-    .directive('addtocart', ['ngCart', function(ngCart){
+    .directive('ngcartAddtocart', ['ngCart', function(ngCart){
         return {
             restrict : 'E',
             controller : 'CartController',
@@ -32,7 +32,7 @@ angular.module('ngCart.directives', [])
         };
     }])
 
-    .directive('cart', ['ngCart', function(ngCart){
+    .directive('ngcartCart', ['ngCart', function(ngCart){
         return {
             restrict : 'E',
             controller : 'CartController',
@@ -44,7 +44,7 @@ angular.module('ngCart.directives', [])
         };
     }])
 
-    .directive('summary', ['ngCart', function(ngCart){
+    .directive('ngcartSummary', ['ngCart', function(ngCart){
         return {
             restrict : 'E',
             controller : 'CartController',
@@ -52,5 +52,5 @@ angular.module('ngCart.directives', [])
             transclude: true,
             templateUrl: 'template/ngCart/summary.html'
         };
-    }])
+    }]);
 
