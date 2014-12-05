@@ -148,7 +148,7 @@ angular.module('ngCart', ['ngCart.directives'])
 
     }])
 
-    .factory('ngCartItem', ['$rootScope',  function ($rootScope) {
+    .factory('ngCartItem', ['$rootScope', '$log', function ($rootScope, $log) {
 
         var item = function (id, name, price, quantity, data) {
             this.setId(id);
@@ -163,7 +163,7 @@ angular.module('ngCart', ['ngCart.directives'])
             if (id) { //TODO: check for string or int
                 this._id = id;
             } else {
-                console.error('An ID must be provided');
+                $log.error('An ID must be provided');
                 return false;
             }
             return id;
@@ -178,7 +178,7 @@ angular.module('ngCart', ['ngCart.directives'])
             if (name) { //TODO: check for string
                 this._name = name;
             } else {
-                console.error('A name must be provided');
+                $log.error('A name must be provided');
                 return false;
             }
             return name;
@@ -192,12 +192,12 @@ angular.module('ngCart', ['ngCart.directives'])
             var price = parseFloat(price);
             if (price) {
                 if (price <= 0) {
-                    console.error('A price must be above 0');
+                    $log.error('A price must be above 0');
                     return false;
                 }
                 this._price = (price);
             } else {
-                console.error('A price must be provided');
+                $log.error('A price must be provided');
                 return false;
             }
         }
@@ -220,7 +220,7 @@ angular.module('ngCart', ['ngCart.directives'])
 
             } else {
                 this._quantity = 1;
-                console.info('Quantity must be an integer and was defaulted to 1');
+                $log.error('Quantity must be an integer and was defaulted to 1');
             }
 
             $rootScope.$broadcast('ngCart:change', {});
@@ -238,7 +238,7 @@ angular.module('ngCart', ['ngCart.directives'])
 
         item.prototype.getData = function(){
             if (!this._data){
-                console.info('Data is not set');
+                $log.error('Data is not set');
                 return false;
             }
             return this._data;
