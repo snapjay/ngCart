@@ -141,7 +141,7 @@ angular.module('ngCart', ['ngCart.directives'])
         }
 
         this.getTax = function(){
-            return ((this.getSubTotal()/100) * this.getCart().tax );
+            return (Math.round(((this.getSubTotal()/100) * this.getCart().tax )* 100) / 100);
         }
 
         this.setCart = function (cart) {
