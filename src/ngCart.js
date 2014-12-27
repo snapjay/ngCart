@@ -144,8 +144,10 @@ angular.module('ngCart', ['ngCart.directives'])
 
         this.toObject = function() {
 
+            if (this.getItems().length === 0) return false;
+
             var items = [];
-            angular.forEach(this.getItems(), function(item){
+            angular.forEach(this.getItems(), function(items){
                 items.push (item.toObject());
             });
 
