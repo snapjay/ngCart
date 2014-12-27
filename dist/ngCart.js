@@ -64,22 +64,18 @@ angular.module('ngCart', ['ngCart.directives'])
     }])
 
     .provider('$ngCart', function () {
-        var shipping = false;
-        var tax = false;
         this.$get = function () {
-
         };
-
     })
 
-    .run(['$rootScope', 'ngCart','ngCartItem', 'ngCartStore', function ($rootScope, ngCart, ngCartItem, ngCartStore) {
+    .run(['$rootScope', 'ngCart','ngCartItem', 'store', function ($rootScope, ngCart, ngCartItem, store) {
 
         $rootScope.$on('ngCart:change', function(){
             ngCart.$save();
         });
 
-        if (angular.isObject(ngCartStore.get('cart'))) {
-            ngCart.$restore(ngCartStore.get('cart'));
+        if (angular.isObject(store.get('cart'))) {
+            ngCart.$restore(store.get('cart'));
 
         } else {
             ngCart.init();
@@ -87,7 +83,7 @@ angular.module('ngCart', ['ngCart.directives'])
 
     }])
 
-    .service('ngCart', ['$rootScope', 'ngCartItem', 'ngCartStore', function ($rootScope, ngCartItem, ngCartStore) {
+    .service('ngCart', ['$rootScope', 'ngCartItem', 'store', function ($rootScope, ngCartItem, store) {
 
         this.init = function(){
             this.$cart = {
@@ -95,7 +91,7 @@ angular.module('ngCart', ['ngCart.directives'])
                 tax : null,
                 items : []
             };
-        }
+        };
 
         this.addItem = function (id, name, price, quantity, data) {
 
@@ -115,50 +111,49 @@ angular.module('ngCart', ['ngCart.directives'])
 
         this.getItemById = function (itemId) {
             var items = this.getCart().items;
+            var build = false;
 
-            var build;
             angular.forEach(items, function (item) {
                 if  (item.getId() === itemId) {
                     build = item;
                 }
             });
             return build;
-        }
+        };
 
         this.setShipping = function(shipping){
             this.$cart.shipping = shipping;
-            return shipping;
-        }
+        };
 
         this.getShipping = function(){
             if (this.getCart().items.length == 0) return 0;
             return  this.getCart().shipping;
-        }
+        };
 
         this.setTax = function(tax){
             this.$cart.tax = tax;
-            return this.getTax();
-        }
+        };
 
         this.getTax = function(){
-            return (Math.round(((this.getSubTotal()/100) * this.getCart().tax )* 100) / 100);
-        }
+
+            return +parseFloat(((this.getSubTotal()/100) * this.getCart().tax )).toFixed(2);
+        };
 
         this.setCart = function (cart) {
             this.$cart = cart;
-        }
+        };
 
         this.getCart = function(){
             return this.$cart;
-        }
+        };
 
         this.getItems = function(){
             return this.getCart().items;
-        }
+        };
 
         this.totalItems = function () {
             return this.getCart().items.length;
-        }
+        };
 
         this.getSubTotal = function(){
             var total = 0;
@@ -166,35 +161,51 @@ angular.module('ngCart', ['ngCart.directives'])
                 total += item.getTotal();
             });
             return total;
-        }
+        };
 
         this.totalCost= function () {
-            return this.getSubTotal() + this.getShipping() + this.getTax();
-        }
+            return +parseFloat(this.getSubTotal() + this.getShipping() + this.getTax()).toFixed(2);
+        };
 
-	this.removeItem =  function (index) {
+        this.removeItem = function (index) {
             this.$cart.items.splice(index, 1);
             $rootScope.$broadcast('ngCart:itemRemoved', {});
             $rootScope.$broadcast('ngCart:change', {});
-        }
-	
+
+        };
+
         this.removeItemById = function (id) {
-	    var cart = this.getCart();
-	    angular.forEach(cart.items, function (item, index) {
+            var cart = this.getCart();
+            angular.forEach(cart.items, function (item, index) {
                 if  (item.getId() === id) {
-		    cart.items.splice(index, 1);
+                    cart.items.splice(index, 1);
                 }
             });
-	    this.setCart(cart);
-	    $rootScope.$broadcast('ngCart:itemRemoved', {});
+            this.setCart(cart);
+            $rootScope.$broadcast('ngCart:itemRemoved', {});
             $rootScope.$broadcast('ngCart:change', {});
-        }
-	
+        };
+
         this.empty = function () {
             this.$cart.items = [];
             localStorage.removeItem('cart');
-            return (this.totalItems() === 0);
-        }
+        };
+
+        this.toObject = function() {
+
+            var items = [];
+            angular.forEach(this.getItems(), function(item){
+                items.push (item.toObject());
+            });
+
+            return {
+                shipping: this.getShipping(),
+                tax: this.getTax(),
+                subTotal: this.getSubTotal(),
+                totalCost: this.totalCost(),
+                items:items
+            }
+        };
 
 
         this.$restore = function(storedCart){
@@ -207,15 +218,15 @@ angular.module('ngCart', ['ngCart.directives'])
                 _self.$cart.items.push(new ngCartItem(item._id,  item._name, item._price, item._quantity, item._data));
             });
             this.$save();
-        }
+        };
 
         this.$save = function () {
-            return ngCartStore.set('cart', JSON.stringify(this.getCart()));
+            return store.set('cart', JSON.stringify(this.getCart()));
         }
 
     }])
 
-    .factory('ngCartItem', ['$rootScope', '$log', function ($rootScope, $log) {
+    .factory('ngCartItem', ['$rootScope', function ($rootScope) {
 
         var item = function (id, name, price, quantity, data) {
             this.setId(id);
@@ -227,13 +238,10 @@ angular.module('ngCart', ['ngCart.directives'])
 
 
         item.prototype.setId = function(id){
-            if (id) { //TODO: check for string or int
-                this._id = id;
-            } else {
-                $log.error('An ID must be provided');
-                return false;
+            if (id)  this._id = id;
+            else {
+                console.error('An ID must be provided');
             }
-            return id;
         };
 
         item.prototype.getId = function(){
@@ -242,89 +250,88 @@ angular.module('ngCart', ['ngCart.directives'])
 
 
         item.prototype.setName = function(name){
-            if (name) { //TODO: check for string
-                this._name = name;
-            } else {
-                $log.error('A name must be provided');
-                return false;
+            if (name)  this._name = name;
+            else {
+                console.error('A name must be provided');
             }
-            return name;
         };
-
         item.prototype.getName = function(){
             return this._name;
         };
 
         item.prototype.setPrice = function(price){
-            var price = parseFloat(price);
-            if (price) {
-                if (price <= 0) {
-                    $log.error('A price must be above 0');
-                    return false;
+            var priceFloat = parseFloat(price);
+            if (priceFloat) {
+                if (priceFloat <= 0) {
+                    console.error('A price must be over 0');
+                } else {
+                    this._price = (priceFloat);
                 }
-                this._price = (price);
             } else {
-                $log.error('A price must be provided');
-                return false;
+                console.error('A price must be provided');
             }
-        }
+        };
         item.prototype.getPrice = function(){
             return this._price;
-        }
+        };
 
 
         item.prototype.setQuantity = function(quantity, relative){
 
 
-            var quantity = parseInt(quantity);
-            if (quantity % 1 === 0){
+            var quantityInt = parseInt(quantity);
+            if (quantityInt % 1 === 0){
                 if (relative === true){
-                    this._quantity  += quantity;
+                    this._quantity  += quantityInt;
                 } else {
-                    this._quantity = quantity;
+                    this._quantity = quantityInt;
                 }
                 if (this._quantity < 1) this._quantity = 1;
 
             } else {
                 this._quantity = 1;
-                $log.error('Quantity must be an integer and was defaulted to 1');
+                console.info('Quantity must be an integer and was defaulted to 1');
             }
-
             $rootScope.$broadcast('ngCart:change', {});
-            return this._quantity;
 
-        }
+        };
 
         item.prototype.getQuantity = function(){
             return this._quantity;
-        }
+        };
 
         item.prototype.setData = function(data){
             if (data) this._data = data;
-        }
+        };
 
         item.prototype.getData = function(){
-            if (!this._data){
-                $log.error('Data is not set');
-                return false;
-            }
-            return this._data;
-        }
+            if (this._data) return this._data;
+            else console.info('This item has no data');
+        };
 
         item.prototype.getTotal = function(){
-            return this.getQuantity() * this.getPrice();
-        }
+            return +parseFloat(this.getQuantity() * this.getPrice()).toFixed(2);
+        };
+
+        item.prototype.toObject = function() {
+            return {
+                id: this.getId(),
+                name: this.getName(),
+                price: this.getPrice(),
+                quantity: this.getQuantity(),
+                data: this.getData(),
+                total: this.getTotal()
+            }
+        };
 
         return item;
 
     }])
 
-    .service('ngCartStore', ['$window', function ($window) {
+    .service('store', ['$window', function ($window) {
 
         return {
-            /// TODO: Add empty here
-            /// TODO: Dynamic storage type
-            /// TODO: Unique cart to site
+
             get: function (key) {
                 if ($window.localStorage [key]) {
                     var cart = angular.fromJson($window.localStorage [key]);
@@ -347,4 +354,8 @@ angular.module('ngCart', ['ngCart.directives'])
         }
     }])
 
-    .value('version', '0.0.2-rc.3');
+    .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
+        $scope.ngCart = ngCart;
+    }])
+
+    .value('version', '0.0.1-rc.2');
