@@ -8,13 +8,8 @@ angular.module('ngCart', ['ngCart.directives'])
     }])
 
     .provider('$ngCart', function () {
-
-        var shipping = false;
-        var tax = false;
         this.$get = function () {
-
         };
-
     })
 
     .run(['$rootScope', 'ngCart','ngCartItem', 'store', function ($rootScope, ngCart, ngCartItem, store) {
@@ -34,15 +29,13 @@ angular.module('ngCart', ['ngCart.directives'])
 
     .service('ngCart', ['$rootScope', 'ngCartItem', 'store', function ($rootScope, ngCartItem, store) {
 
-
-
         this.init = function(){
             this.$cart = {
                 shipping : null,
                 tax : null,
                 items : []
             };
-        }
+        };
 
         this.addItem = function (id, name, price, quantity, data) {
 
@@ -62,49 +55,49 @@ angular.module('ngCart', ['ngCart.directives'])
 
         this.getItemById = function (itemId) {
             var items = this.getCart().items;
+            var build = false;
 
-            var build;
             angular.forEach(items, function (item) {
                 if  (item.getId() === itemId) {
                     build = item;
                 }
             });
             return build;
-        }
+        };
 
         this.setShipping = function(shipping){
             this.$cart.shipping = shipping;
-        }
+        };
 
         this.getShipping = function(){
             if (this.getCart().items.length == 0) return 0;
             return  this.getCart().shipping;
-        }
+        };
 
         this.setTax = function(tax){
             this.$cart.tax = tax;
-        }
+        };
 
         this.getTax = function(){
 
-            return +parseFloat(((this.getSubTotal()/100) * this.getCart().tax )).toFixed(2);;
-        }
+            return +parseFloat(((this.getSubTotal()/100) * this.getCart().tax )).toFixed(2);
+        };
 
         this.setCart = function (cart) {
             this.$cart = cart;
-        }
+        };
 
         this.getCart = function(){
             return this.$cart;
-        }
+        };
 
         this.getItems = function(){
             return this.getCart().items;
-        }
+        };
 
         this.totalItems = function () {
             return this.getCart().items.length;
-        }
+        };
 
         this.getSubTotal = function(){
             var total = 0;
@@ -112,23 +105,23 @@ angular.module('ngCart', ['ngCart.directives'])
                 total += item.getTotal();
             });
             return total;
-        }
+        };
 
         this.totalCost= function () {
             return +parseFloat(this.getSubTotal() + this.getShipping() + this.getTax()).toFixed(2);
-        }
+        };
 
         this.removeItem = function (index) {
             this.$cart.items.splice(index, 1);
             $rootScope.$broadcast('ngCart:itemRemoved', {});
             $rootScope.$broadcast('ngCart:change', {});
 
-        }
+        };
 
         this.empty = function () {
             this.$cart.items = [];
             localStorage.removeItem('cart');
-        }
+        };
 
         this.toObject = function() {
 
@@ -157,7 +150,7 @@ angular.module('ngCart', ['ngCart.directives'])
                 _self.$cart.items.push(new ngCartItem(item._id,  item._name, item._price, item._quantity, item._data));
             });
             this.$save();
-        }
+        };
 
         this.$save = function () {
             return store.set('cart', JSON.stringify(this.getCart()));
@@ -165,7 +158,7 @@ angular.module('ngCart', ['ngCart.directives'])
 
     }])
 
-    .factory('ngCartItem', ['$rootScope', 'store', function ($rootScope, store) {
+    .factory('ngCartItem', ['$rootScope', function ($rootScope) {
 
         var item = function (id, name, price, quantity, data) {
             this.setId(id);
@@ -181,11 +174,11 @@ angular.module('ngCart', ['ngCart.directives'])
             else {
                 console.error('An ID must be provided');
             }
-        }
+        };
 
         item.prototype.getId = function(){
             return this._id;
-        }
+        };
 
 
         item.prototype.setName = function(name){
@@ -193,36 +186,37 @@ angular.module('ngCart', ['ngCart.directives'])
             else {
                 console.error('A name must be provided');
             }
-        }
+        };
         item.prototype.getName = function(){
             return this._name;
-        }
+        };
 
         item.prototype.setPrice = function(price){
-            var price = parseFloat(price);
-            if (price) {
-                if (price <= 0) {
+            var priceFloat = parseFloat(price);
+            if (priceFloat) {
+                if (priceFloat <= 0) {
                     console.error('A price must be over 0');
+                } else {
+                    this._price = (priceFloat);
                 }
-                this._price = (price);
             } else {
                 console.error('A price must be provided');
             }
-        }
+        };
         item.prototype.getPrice = function(){
             return this._price;
-        }
+        };
 
 
         item.prototype.setQuantity = function(quantity, relative){
 
 
-            var quantity = parseInt(quantity);
-            if (quantity % 1 === 0){
+            var quantityInt = parseInt(quantity);
+            if (quantityInt % 1 === 0){
                 if (relative === true){
-                    this._quantity  += quantity;
+                    this._quantity  += quantityInt;
                 } else {
-                    this._quantity = quantity;
+                    this._quantity = quantityInt;
                 }
                 if (this._quantity < 1) this._quantity = 1;
 
@@ -232,24 +226,24 @@ angular.module('ngCart', ['ngCart.directives'])
             }
             $rootScope.$broadcast('ngCart:change', {});
 
-        }
+        };
 
         item.prototype.getQuantity = function(){
             return this._quantity;
-        }
+        };
 
         item.prototype.setData = function(data){
             if (data) this._data = data;
-        }
+        };
 
         item.prototype.getData = function(){
             if (this._data) return this._data;
             else console.info('This item has no data');
-        }
+        };
 
         item.prototype.getTotal = function(){
             return +parseFloat(this.getQuantity() * this.getPrice()).toFixed(2);
-        }
+        };
 
         item.prototype.toObject = function() {
             return {
