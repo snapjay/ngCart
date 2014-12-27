@@ -118,6 +118,18 @@ angular.module('ngCart', ['ngCart.directives'])
 
         };
 
+        this.removeItemById = function (id) {
+            var cart = this.getCart();
+            angular.forEach(cart.items, function (item, index) {
+                if  (item.getId() === id) {
+                    cart.items.splice(index, 1);
+                }
+            });
+            this.setCart(cart);
+            $rootScope.$broadcast('ngCart:itemRemoved', {});
+            $rootScope.$broadcast('ngCart:change', {});
+        };
+
         this.empty = function () {
             this.$cart.items = [];
             localStorage.removeItem('cart');
@@ -131,11 +143,11 @@ angular.module('ngCart', ['ngCart.directives'])
             });
 
             return {
-                items:items,
                 shipping: this.getShipping(),
                 tax: this.getTax(),
                 subTotal: this.getSubTotal(),
-                totalCost: this.totalCost()
+                totalCost: this.totalCost(),
+                items:items
             }
         };
 
