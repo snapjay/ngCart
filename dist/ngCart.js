@@ -88,6 +88,7 @@ angular.module('ngCart', ['ngCart.directives'])
         this.init = function(){
             this.$cart = {
                 shipping : null,
+                taxRate : null,
                 tax : null,
                 items : []
             };
@@ -123,6 +124,7 @@ angular.module('ngCart', ['ngCart.directives'])
 
         this.setShipping = function(shipping){
             this.$cart.shipping = shipping;
+            return this.getShipping();
         };
 
         this.getShipping = function(){
@@ -130,17 +132,22 @@ angular.module('ngCart', ['ngCart.directives'])
             return  this.getCart().shipping;
         };
 
-        this.setTax = function(tax){
-            this.$cart.tax = tax;
+        this.setTaxRate = function(taxRate){
+            this.$cart.taxRate = +parseFloat(taxRate).toFixed(2);
+            return this.getTaxRate();
+        };
+
+        this.getTaxRate = function(){
+            return this.$cart.taxRate
         };
 
         this.getTax = function(){
-
-            return +parseFloat(((this.getSubTotal()/100) * this.getCart().tax )).toFixed(2);
+            return +parseFloat(((this.getSubTotal()/100) * this.getCart().taxRate )).toFixed(2);
         };
 
         this.setCart = function (cart) {
             this.$cart = cart;
+            return this.getCart();
         };
 
         this.getCart = function(){
@@ -201,6 +208,7 @@ angular.module('ngCart', ['ngCart.directives'])
             return {
                 shipping: this.getShipping(),
                 tax: this.getTax(),
+                taxRate: this.getTaxRate(),
                 subTotal: this.getSubTotal(),
                 totalCost: this.totalCost(),
                 items:items
