@@ -103,6 +103,15 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         this.totalItems = function () {
+            var count = 0;
+            var items = this.getItems();
+            angular.forEach(items, function (item) {
+                    count += item.getQuantity();
+            });
+            return count;
+        };
+
+        this.totalUniqueItems = function () {
             return this.getCart().items.length;
         };
 
@@ -262,6 +271,7 @@ angular.module('ngCart', ['ngCart.directives'])
             if (this._data) return this._data;
             else console.info('This item has no data');
         };
+
 
         item.prototype.getTotal = function(){
             return +parseFloat(this.getQuantity() * this.getPrice()).toFixed(2);
