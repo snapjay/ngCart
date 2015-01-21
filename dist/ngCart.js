@@ -6,8 +6,7 @@ angular.module('ngCart.directives', [])
     .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
 
         $scope.ngCart = ngCart;
-
-
+        console.log ($scope.quantity)
     }])
 
     .directive('ngcartAddtocart', ['ngCart', function(ngCart){
@@ -18,6 +17,7 @@ angular.module('ngCart.directives', [])
                 id:'@',
                 name:'@',
                 quantity:'@',
+                quantityMax:'@',
                 price:'@',
                 data:'='
             },
@@ -26,9 +26,22 @@ angular.module('ngCart.directives', [])
             link:function(scope, element, attrs){
                 scope.attrs = attrs;
                 scope.inCart = function(){
-                    return ngCart.getItemById(attrs.id);
+                    return  ngCart.getItemById(attrs.id);
+                };
+
+                if (scope.inCart()){
+                    scope.q = ngCart.getItemById(attrs.id).getQuantity();
+                } else {
+                    scope.q = parseInt(scope.quantity);
                 }
+
+                scope.qtyOpt =  [];
+                for (var i = 1; i <= scope.quantityMax; i++) {
+                    scope.qtyOpt.push(i);
+                }
+
             }
+
         };
     }])
 
@@ -52,9 +65,7 @@ angular.module('ngCart.directives', [])
             transclude: true,
             templateUrl: 'template/ngCart/summary.html'
         };
-    }]);
-
-;'use strict';
+    }]);;'use strict';
 
 
 angular.module('ngCart', ['ngCart.directives'])
@@ -158,7 +169,16 @@ angular.module('ngCart', ['ngCart.directives'])
             return this.getCart().items;
         };
 
-        this.totalItems = function () {
+        this.getTotalItems = function () {
+            var count = 0;
+            var items = this.getItems();
+            angular.forEach(items, function (item) {
+                count += item.getQuantity();
+            });
+            return count;
+        };
+
+        this.getTotalUniqueItems = function () {
             return this.getCart().items.length;
         };
 
@@ -319,6 +339,7 @@ angular.module('ngCart', ['ngCart.directives'])
             else console.info('This item has no data');
         };
 
+
         item.prototype.getTotal = function(){
             return +parseFloat(this.getQuantity() * this.getPrice()).toFixed(2);
         };
@@ -368,4 +389,4 @@ angular.module('ngCart', ['ngCart.directives'])
         $scope.ngCart = ngCart;
     }])
 
-    .value('version', '0.0.1-rc.2');
+    .value('version', '0.0.3-rc.1');
