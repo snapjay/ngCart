@@ -3,7 +3,7 @@ ngCart
 
 Really simple shopping cart for AngularJS
 -----------------------------------------------------------------
-AngularJS module consists of a set of directives to help you quickly impliment a shopping cart on your AngularJS app
+AngularJS module consists of a set of directives to help you quickly implement a shopping cart on your AngularJS app
 
 Documentation
 -----

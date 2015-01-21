@@ -102,16 +102,16 @@ angular.module('ngCart', ['ngCart.directives'])
             return this.getCart().items;
         };
 
-        this.totalItems = function () {
+        this.getTotalItems = function () {
             var count = 0;
             var items = this.getItems();
             angular.forEach(items, function (item) {
-                    count += item.getQuantity();
+                count += item.getQuantity();
             });
             return count;
         };
 
-        this.totalUniqueItems = function () {
+        this.getTotalUniqueItems = function () {
             return this.getCart().items.length;
         };
 
@@ -322,4 +322,4 @@ angular.module('ngCart', ['ngCart.directives'])
         $scope.ngCart = ngCart;
     }])
 
-    .value('version', '0.0.1-rc.2');
+    .value('version', '0.0.3-rc.1');
