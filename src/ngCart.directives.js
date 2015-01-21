@@ -6,8 +6,7 @@ angular.module('ngCart.directives', [])
     .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
 
         $scope.ngCart = ngCart;
-
-
+        console.log ($scope.quantity)
     }])
 
     .directive('ngcartAddtocart', ['ngCart', function(ngCart){
@@ -18,6 +17,7 @@ angular.module('ngCart.directives', [])
                 id:'@',
                 name:'@',
                 quantity:'@',
+                quantityMax:'@',
                 price:'@',
                 data:'='
             },
@@ -26,9 +26,22 @@ angular.module('ngCart.directives', [])
             link:function(scope, element, attrs){
                 scope.attrs = attrs;
                 scope.inCart = function(){
-                    return ngCart.getItemById(attrs.id);
+                    return  ngCart.getItemById(attrs.id);
+                };
+
+                if (scope.inCart()){
+                    scope.q = ngCart.getItemById(attrs.id).getQuantity();
+                } else {
+                    scope.q = parseInt(scope.quantity);
                 }
+
+                scope.qtyOpt =  [];
+                for (var i = 1; i <= scope.quantityMax; i++) {
+                    scope.qtyOpt.push(i);
+                }
+
             }
+
         };
     }])
 
@@ -53,4 +66,3 @@ angular.module('ngCart.directives', [])
             templateUrl: 'template/ngCart/summary.html'
         };
     }]);
-
