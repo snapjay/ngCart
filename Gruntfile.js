@@ -14,7 +14,7 @@ module.exports = function (grunt) {
                 separator: ';'
             },
             dist: {
-                src: ['src/*.js'],
+                src: ['src/ngCart.js', 'src/ngCart.directives.js'],
                 dest: "dist/ngCart.js"
             }
         },
@@ -31,15 +31,15 @@ module.exports = function (grunt) {
 
         karma: {
             unit: {
-                configFile: 'test/karma.conf.js',
+                configFile: 'karma.conf.js',
                 background: true
             },
             once: {
-                configFile: 'test/karma.conf.js',
+                configFile: 'karma.conf.js',
                 singleRun: true
             },
             travis: {
-                configFile: 'test/karma.conf.js',
+                configFile: 'karma.conf.js',
                 singleRun: true,
                 browsers: ['PhantomJS']
             }
