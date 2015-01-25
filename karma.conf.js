@@ -1,14 +1,13 @@
 module.exports = function (config) {
     config.set({
 
-        basePath: '../',
+        basePath: './',
 
         files: [
             'bower_components/angular/angular.js',
             'bower_components/angular-mocks/angular-mocks.js',
             'bower_components/lodash/dist/lodash.js',
-            'src/**/*.js',
-            'test/unit/**/*.js'
+            'src/**/*.js'
         ],
 
         autoWatch: false,
