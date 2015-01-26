@@ -189,7 +189,7 @@ angular.module('ngCart', ['ngCart.directives'])
 
     }])
 
-    .factory('ngCartItem', ['$rootScope', '$log', function ($rootScope, $log) {
+    .factory('ngCartItem', ['$rootScope', function ($rootScope) {
 
         var item = function (id, name, price, quantity, data) {
             this.setId(id);
@@ -203,7 +203,7 @@ angular.module('ngCart', ['ngCart.directives'])
         item.prototype.setId = function(id){
             if (id)  this._id = id;
             else {
-                $log.error('An ID must be provided');
+                console.error('An ID must be provided');
             }
         };
 
@@ -215,7 +215,7 @@ angular.module('ngCart', ['ngCart.directives'])
         item.prototype.setName = function(name){
             if (name)  this._name = name;
             else {
-                $log.error('A name must be provided');
+                console.error('A name must be provided');
             }
         };
         item.prototype.getName = function(){
@@ -226,12 +226,12 @@ angular.module('ngCart', ['ngCart.directives'])
             var priceFloat = parseFloat(price);
             if (priceFloat) {
                 if (priceFloat <= 0) {
-                    $log.error('A price must be over 0');
+                    console.error('A price must be over 0');
                 } else {
                     this._price = (priceFloat);
                 }
             } else {
-                $log.error('A price must be provided');
+                console.error('A price must be provided');
             }
         };
         item.prototype.getPrice = function(){
@@ -253,7 +253,7 @@ angular.module('ngCart', ['ngCart.directives'])
 
             } else {
                 this._quantity = 1;
-                $log.info('Quantity must be an integer and was defaulted to 1');
+                console.info('Quantity must be an integer and was defaulted to 1');
             }
             $rootScope.$broadcast('ngCart:change', {});
 
@@ -269,7 +269,7 @@ angular.module('ngCart', ['ngCart.directives'])
 
         item.prototype.getData = function(){
             if (this._data) return this._data;
-            else $log.info('This item has no data');
+            else console.info('This item has no data');
         };
 
 
