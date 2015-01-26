@@ -120,7 +120,7 @@ angular.module('ngCart', ['ngCart.directives'])
             angular.forEach(this.getCart().items, function (item) {
                 total += item.getTotal();
             });
-            return total;
+            return +parseFloat(total).toFixed(2);
         };
 
         this.totalCost= function () {
@@ -320,6 +320,7 @@ angular.module('ngCart', ['ngCart.directives'])
 
     .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
         $scope.ngCart = ngCart;
+
     }])
 
     .value('version', '0.0.3-rc.1');
