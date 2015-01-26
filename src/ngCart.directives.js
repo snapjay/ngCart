@@ -4,9 +4,7 @@
 angular.module('ngCart.directives', [])
 
     .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
-
         $scope.ngCart = ngCart;
-        console.log ($scope.quantity)
     }])
 
     .directive('ngcartAddtocart', ['ngCart', function(ngCart){
@@ -45,7 +43,7 @@ angular.module('ngCart.directives', [])
         };
     }])
 
-    .directive('ngcartCart', ['ngCart', function(ngCart){
+    .directive('ngcartCart', [function(){
         return {
             restrict : 'E',
             controller : 'CartController',
@@ -57,7 +55,7 @@ angular.module('ngCart.directives', [])
         };
     }])
 
-    .directive('ngcartSummary', ['ngCart', function(ngCart){
+    .directive('ngcartSummary', [function(){
         return {
             restrict : 'E',
             controller : 'CartController',
