@@ -123,7 +123,7 @@ angular.module('ngCart', ['ngCart.directives'])
             return +parseFloat(total).toFixed(2);
         };
 
-        this.totalCost= function () {
+        this.totalCost = function () {
             return +parseFloat(this.getSubTotal() + this.getShipping() + this.getTax()).toFixed(2);
         };
 

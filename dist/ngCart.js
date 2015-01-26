@@ -1,73 +1,6 @@
 'use strict';
 
 
-angular.module('ngCart.directives', [])
-
-    .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
-
-        $scope.ngCart = ngCart;
-        console.log ($scope.quantity)
-    }])
-
-    .directive('ngcartAddtocart', ['ngCart', function(ngCart){
-        return {
-            restrict : 'E',
-            controller : 'CartController',
-            scope: {
-                id:'@',
-                name:'@',
-                quantity:'@',
-                quantityMax:'@',
-                price:'@',
-                data:'='
-            },
-            transclude: true,
-            templateUrl: 'template/ngCart/addtocart.html',
-            link:function(scope, element, attrs){
-                scope.attrs = attrs;
-                scope.inCart = function(){
-                    return  ngCart.getItemById(attrs.id);
-                };
-
-                if (scope.inCart()){
-                    scope.q = ngCart.getItemById(attrs.id).getQuantity();
-                } else {
-                    scope.q = parseInt(scope.quantity);
-                }
-
-                scope.qtyOpt =  [];
-                for (var i = 1; i <= scope.quantityMax; i++) {
-                    scope.qtyOpt.push(i);
-                }
-
-            }
-
-        };
-    }])
-
-    .directive('ngcartCart', ['ngCart', function(ngCart){
-        return {
-            restrict : 'E',
-            controller : 'CartController',
-            scope: {},
-            templateUrl: 'template/ngCart/cart.html',
-            link:function(scope, element, attrs){
-
-            }
-        };
-    }])
-
-    .directive('ngcartSummary', ['ngCart', function(ngCart){
-        return {
-            restrict : 'E',
-            controller : 'CartController',
-            scope: {},
-            transclude: true,
-            templateUrl: 'template/ngCart/summary.html'
-        };
-    }]);;'use strict';
-
-
 angular.module('ngCart', ['ngCart.directives'])
 
     .config([function () {
@@ -187,10 +120,10 @@ angular.module('ngCart', ['ngCart.directives'])
             angular.forEach(this.getCart().items, function (item) {
                 total += item.getTotal();
             });
-            return total;
+            return +parseFloat(total).toFixed(2);
         };
 
-        this.totalCost= function () {
+        this.totalCost = function () {
             return +parseFloat(this.getSubTotal() + this.getShipping() + this.getTax()).toFixed(2);
         };
 
@@ -387,6 +320,72 @@ angular.module('ngCart', ['ngCart.directives'])
 
     .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
         $scope.ngCart = ngCart;
+
     }])
 
     .value('version', '0.0.3-rc.1');
+
+
+angular.module('ngCart.directives', [])
+
+    .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
+        $scope.ngCart = ngCart;
+    }])
+
+    .directive('ngcartAddtocart', ['ngCart', function(ngCart){
+        return {
+            restrict : 'E',
+            controller : 'CartController',
+            scope: {
+                id:'@',
+                name:'@',
+                quantity:'@',
+                quantityMax:'@',
+                price:'@',
+                data:'='
+            },
+            transclude: true,
+            templateUrl: 'template/ngCart/addtocart.html',
+            link:function(scope, element, attrs){
+                scope.attrs = attrs;
+                scope.inCart = function(){
+                    return  ngCart.getItemById(attrs.id);
+                };
+
+                if (scope.inCart()){
+                    scope.q = ngCart.getItemById(attrs.id).getQuantity();
+                } else {
+                    scope.q = parseInt(scope.quantity);
+                }
+
+                scope.qtyOpt =  [];
+                for (var i = 1; i <= scope.quantityMax; i++) {
+                    scope.qtyOpt.push(i);
+                }
+
+            }
+
+        };
+    }])
+
+    .directive('ngcartCart', [function(){
+        return {
+            restrict : 'E',
+            controller : 'CartController',
+            scope: {},
+            templateUrl: 'template/ngCart/cart.html',
+            link:function(scope, element, attrs){
+
+            }
+        };
+    }])
+
+    .directive('ngcartSummary', [function(){
+        return {
+            restrict : 'E',
+            controller : 'CartController',
+            scope: {},
+            transclude: true,
+            templateUrl: 'template/ngCart/summary.html'
+        };
+    }]);
