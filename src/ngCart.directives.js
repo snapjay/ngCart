@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('ngCart.directives', [])
+angular.module('ngCart.directives', ['ngCart.fulfilment'])
 
     .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
         $scope.ngCart = ngCart;
@@ -62,5 +62,27 @@ angular.module('ngCart.directives', [])
             scope: {},
             transclude: true,
             templateUrl: 'template/ngCart/summary.html'
+        };
+    }])
+
+    .directive('ngcartCheckout', [function(){
+        return {
+            restrict : 'E',
+            controller : ('CartController', ['$scope', 'ngCart', 'fulfilmentProvider', function($scope, ngCart, fulfilmentProvider) {
+                $scope.ngCart = ngCart;
+
+                $scope.checkout = function () {
+                    fulfilmentProvider.setService($scope.service);
+                    fulfilmentProvider.setSettings($scope.settings);
+                    var promise = fulfilmentProvider.checkout();
+                    console.log(promise);
+                }
+            }]),
+            scope: {
+                service:'@',
+                settings:'='
+            },
+            transclude: true,
+            templateUrl: 'template/ngCart/checkout.html'
         };
     }]);
