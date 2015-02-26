@@ -47,4 +47,17 @@ angular.module('ngCart.fulfilment', [])
                 {data:ngCart.toObject()})
         }
 
+ }])
+
+.service('ngCart.fulfilment.paypal', ['$http', 'ngCart', function($http, ngCart){
+
+
+
+
+
+        this.checkout = function(settings){
+            return $http.post(settings.url,
+                {data:ngCart.toObject()})
+        }
+
  }]);
