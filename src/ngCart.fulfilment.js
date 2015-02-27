@@ -24,7 +24,7 @@ angular.module('ngCart.fulfilment', [])
     }])
 
 
-.service('ngCart.fulfilment.log', ['$q', '$log','ngCart', function($q, $log, ngCart){
+.service('ngCart.fulfilment.log', ['$q', '$log', 'ngCart', function($q, $log, ngCart){
 
         this.checkout = function(){
 
@@ -40,24 +40,17 @@ angular.module('ngCart.fulfilment', [])
         }
 
  }])
+
 .service('ngCart.fulfilment.http', ['$http', 'ngCart', function($http, ngCart){
 
         this.checkout = function(settings){
             return $http.post(settings.url,
                 {data:ngCart.toObject()})
         }
-
  }])
+
 
 .service('ngCart.fulfilment.paypal', ['$http', 'ngCart', function($http, ngCart){
 
 
-
-
-
-        this.checkout = function(settings){
-            return $http.post(settings.url,
-                {data:ngCart.toObject()})
-        }
-
- }]);
+}]);
