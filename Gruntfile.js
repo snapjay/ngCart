@@ -14,7 +14,7 @@ module.exports = function (grunt) {
                 separator: ';'
             },
             dist: {
-                src: ['src/ngCart.js', 'src/ngCart.directives.js'],
+                src: ['src/ngCart.js', 'src/ngCart.directives.js', 'src/ngCart.fulfilment.js'],
                 dest: "dist/ngCart.js"
             }
         },
