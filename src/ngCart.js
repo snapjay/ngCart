@@ -152,6 +152,12 @@ angular.module('ngCart', ['ngCart.directives'])
             this.$cart.items = [];
             localStorage.removeItem('cart');
         };
+        
+        this.isEmpty = function () {
+            
+            return (this.$cart.items.length > 0 ? true : false);
+            
+        };
 
         this.toObject = function() {
 
