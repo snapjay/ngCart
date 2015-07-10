@@ -155,7 +155,7 @@ angular.module('ngCart', ['ngCart.directives'])
         
         this.isEmpty = function () {
             
-            return (this.$cart.items.length > 0 ? true : false);
+            return (this.$cart.items.length > 0 ? false : true);
             
         };
 
