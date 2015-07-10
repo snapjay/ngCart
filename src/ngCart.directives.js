@@ -20,7 +20,13 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
                 data:'='
             },
             transclude: true,
-            templateUrl: 'template/ngCart/addtocart.html',
+            templateUrl: function(element, attrs) {
+                if ( typeof attrs.templateUrl == 'undefined' ) {
+                    return 'template/ngCart/addtocart.html';
+                } else {
+                    return attrs.templateUrl;
+                }
+            },
             link:function(scope, element, attrs){
                 scope.attrs = attrs;
                 scope.inCart = function(){
@@ -48,7 +54,13 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
             restrict : 'E',
             controller : 'CartController',
             scope: {},
-            templateUrl: 'template/ngCart/cart.html',
+            templateUrl: function(element, attrs) {
+                if ( typeof attrs.templateUrl == 'undefined' ) {
+                    return 'template/ngCart/cart.html';
+                } else {
+                    return attrs.templateUrl;
+                }
+            },
             link:function(scope, element, attrs){
 
             }
@@ -61,7 +73,13 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
             controller : 'CartController',
             scope: {},
             transclude: true,
-            templateUrl: 'template/ngCart/summary.html'
+            templateUrl: function(element, attrs) {
+                if ( typeof attrs.templateUrl == 'undefined' ) {
+                    return 'template/ngCart/summary.html';
+                } else {
+                    return attrs.templateUrl;
+                }
+            }
         };
     }])
 
@@ -83,6 +101,12 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
                 settings:'='
             },
             transclude: true,
-            templateUrl: 'template/ngCart/checkout.html'
+            templateUrl: function(element, attrs) {
+                if ( typeof attrs.templateUrl == 'undefined' ) {
+                    return 'template/ngCart/checkout.html';
+                } else {
+                    return attrs.templateUrl;
+                }
+            }
         };
     }]);
