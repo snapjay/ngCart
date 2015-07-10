@@ -51,7 +51,10 @@ describe('ngCart module', function() {
                 expect($scope.ngCart.getItems().length).toEqual(0);
             });
 
-
+            it('should be able to show isEmpty', function() {
+                $scope.ngCart.empty();
+                expect($scope.ngCart.isEmpty()).toEqual(true);
+            });
 
 
             describe('ngCart', function() {
@@ -96,7 +99,10 @@ describe('ngCart module', function() {
                 it('Have correct getSubTotal', function() {
                     expect($scope.ngCart.getSubTotal()).toEqual(859.94);
                 });
-
+                
+                it('should be able to show isEmpty correctly as false', function() {
+                    expect($scope.ngCart.isEmpty()).toEqual(false);
+                });
 
                 it('Have correct totalCost', function() {
                     expect($scope.ngCart.totalCost()).toEqual(936.94);
