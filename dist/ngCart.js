@@ -331,7 +331,7 @@ angular.module('ngCart', ['ngCart.directives'])
 
     }])
 
-    .value('version', '0.0.3-rc.1');
+    .value('version', '1.0.0');
 ;'use strict';
 
 
@@ -426,7 +426,7 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
                 $scope.checkout = function () {
                     fulfilmentProvider.setService($scope.service);
                     fulfilmentProvider.setSettings($scope.settings);
-                    var promise = fulfilmentProvider.checkout()
+                    fulfilmentProvider.checkout()
                         .success(function (data, status, headers, config) {
                             $rootScope.$broadcast('ngCart:checkout_succeeded', data);
                         })

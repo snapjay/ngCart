@@ -6,7 +6,7 @@ describe('ngCart module', function() {
 
     describe('value - version', function() {
         it('should return current version', inject(function(version) {
-            expect(version).toEqual('0.0.3-rc.1');
+            expect(version).toEqual('1.0.0');
         }));
     });
 

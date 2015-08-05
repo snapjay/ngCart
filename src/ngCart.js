@@ -331,4 +331,4 @@ angular.module('ngCart', ['ngCart.directives'])
 
     }])
 
-    .value('version', '0.0.3-rc.1');
+    .value('version', '1.0.0');
