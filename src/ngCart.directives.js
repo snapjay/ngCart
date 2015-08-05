@@ -86,7 +86,7 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
     .directive('ngcartCheckout', [function(){
         return {
             restrict : 'E',
-            controller : ('CartController', ['$scope', 'ngCart', 'fulfilmentProvider', function($scope, ngCart, fulfilmentProvider) {
+            controller : ('CartController', ['$rootScope', '$scope', 'ngCart', 'fulfilmentProvider', function($rootScope, $scope, ngCart, fulfilmentProvider) {
                 $scope.ngCart = ngCart;
 
                 $scope.checkout = function () {
