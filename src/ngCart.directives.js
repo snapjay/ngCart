@@ -92,8 +92,16 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
                 $scope.checkout = function () {
                     fulfilmentProvider.setService($scope.service);
                     fulfilmentProvider.setSettings($scope.settings);
-                    var promise = fulfilmentProvider.checkout();
-                    console.log(promise);
+                    var promise = fulfilmentProvider.checkout()
+                        .success(function (data, status, headers, config) {
+                            $rootScope.$broadcast('ngCart:checkout_succeeded', data);
+                        })
+                        .error(function (data, status, headers, config) {
+                            $rootScope.$broadcast('ngCart:checkout_failed', {
+                                statusCode: status,
+                                error: data
+                            });
+                        });
                 }
             }]),
             scope: {

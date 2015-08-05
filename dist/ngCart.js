@@ -152,6 +152,12 @@ angular.module('ngCart', ['ngCart.directives'])
             this.$cart.items = [];
             localStorage.removeItem('cart');
         };
+        
+        this.isEmpty = function () {
+            
+            return (this.$cart.items.length > 0 ? false : true);
+            
+        };
 
         this.toObject = function() {
 
@@ -348,7 +354,13 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
                 data:'='
             },
             transclude: true,
-            templateUrl: 'template/ngCart/addtocart.html',
+            templateUrl: function(element, attrs) {
+                if ( typeof attrs.templateUrl == 'undefined' ) {
+                    return 'template/ngCart/addtocart.html';
+                } else {
+                    return attrs.templateUrl;
+                }
+            },
             link:function(scope, element, attrs){
                 scope.attrs = attrs;
                 scope.inCart = function(){
@@ -376,7 +388,13 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
             restrict : 'E',
             controller : 'CartController',
             scope: {},
-            templateUrl: 'template/ngCart/cart.html',
+            templateUrl: function(element, attrs) {
+                if ( typeof attrs.templateUrl == 'undefined' ) {
+                    return 'template/ngCart/cart.html';
+                } else {
+                    return attrs.templateUrl;
+                }
+            },
             link:function(scope, element, attrs){
 
             }
@@ -389,7 +407,13 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
             controller : 'CartController',
             scope: {},
             transclude: true,
-            templateUrl: 'template/ngCart/summary.html'
+            templateUrl: function(element, attrs) {
+                if ( typeof attrs.templateUrl == 'undefined' ) {
+                    return 'template/ngCart/summary.html';
+                } else {
+                    return attrs.templateUrl;
+                }
+            }
         };
     }])
 
@@ -402,8 +426,16 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
                 $scope.checkout = function () {
                     fulfilmentProvider.setService($scope.service);
                     fulfilmentProvider.setSettings($scope.settings);
-                    var promise = fulfilmentProvider.checkout();
-                    console.log(promise);
+                    var promise = fulfilmentProvider.checkout()
+                        .success(function (data, status, headers, config) {
+                            $rootScope.$broadcast('ngCart:checkout_succeeded', data);
+                        })
+                        .error(function (data, status, headers, config) {
+                            $rootScope.$broadcast('ngCart:checkout_failed', {
+                                statusCode: status,
+                                error: data
+                            });
+                        });
                 }
             }]),
             scope: {
@@ -411,9 +443,16 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
                 settings:'='
             },
             transclude: true,
-            templateUrl: 'template/ngCart/checkout.html'
+            templateUrl: function(element, attrs) {
+                if ( typeof attrs.templateUrl == 'undefined' ) {
+                    return 'template/ngCart/checkout.html';
+                } else {
+                    return attrs.templateUrl;
+                }
+            }
         };
-    }]);;
+    }]);
+;
 angular.module('ngCart.fulfilment', [])
     .service('fulfilmentProvider', ['$injector', function($injector){
 
@@ -460,7 +499,7 @@ angular.module('ngCart.fulfilment', [])
 
         this.checkout = function(settings){
             return $http.post(settings.url,
-                {data:ngCart.toObject()})
+                { data: ngCart.toObject(), options: settings.options});
         }
  }])
 
