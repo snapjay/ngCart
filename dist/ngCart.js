@@ -499,7 +499,7 @@ angular.module('ngCart.fulfilment', [])
 
         this.checkout = function(settings){
             return $http.post(settings.url,
-                {data:ngCart.toObject()})
+                { data: ngCart.toObject(), options: settings.options});
         }
  }])
 
