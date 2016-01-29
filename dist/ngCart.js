@@ -27,7 +27,7 @@ angular.module('ngCart', ['ngCart.directives'])
 
     }])
 
-    .service('ngCart', ['$rootScope', 'ngCartItem', 'store', function ($rootScope, ngCartItem, store) {
+    .service('ngCart', ['$rootScope', '$window', 'ngCartItem', 'store', function ($rootScope, $window, ngCartItem, store) {
 
         this.init = function(){
             this.$cart = {
@@ -152,7 +152,7 @@ angular.module('ngCart', ['ngCart.directives'])
             
             $rootScope.$broadcast('ngCart:change', {});
             this.$cart.items = [];
-            localStorage.removeItem('cart');
+            $window.localStorage.removeItem('cart');
         };
         
         this.isEmpty = function () {
@@ -307,8 +307,8 @@ angular.module('ngCart', ['ngCart.directives'])
         return {
 
             get: function (key) {
-                if ($window.localStorage [key]) {
-                    var cart = angular.fromJson($window.localStorage [key]);
+                if ( $window.localStorage.getItem(key) )  {
+                    var cart = angular.fromJson( $window.localStorage.getItem(key) ) ;
                     return JSON.parse(cart);
                 }
                 return false;
@@ -319,11 +319,11 @@ angular.module('ngCart', ['ngCart.directives'])
             set: function (key, val) {
 
                 if (val === undefined) {
-                    $window.localStorage .removeItem(key);
+                    $window.localStorage.removeItem(key);
                 } else {
-                    $window.localStorage [key] = angular.toJson(val);
+                    $window.localStorage.setItem( key, angular.toJson(val) );
                 }
-                return $window.localStorage [key];
+                return $window.localStorage.getItem(key);
             }
         }
     }])
