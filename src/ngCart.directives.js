@@ -9,7 +9,7 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
 
     .directive('ngcartAddtocart', ['ngCart', function(ngCart){
         return {
-            restrict : 'E',
+            restrict : 'AE',
             controller : 'CartController',
             scope: {
                 id:'@',
