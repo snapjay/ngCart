@@ -5,6 +5,7 @@
   "description": "Really simple shopping cart for AngularJS",
   "license": "MIT",
   "tags": "AngularJS, directive, module, shopping cart, shopping basket",
+  "main": "dist/ngCart.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/snapjay/ngcart.git"
