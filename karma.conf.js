@@ -19,7 +19,7 @@ module.exports = function (config) {
             'karma-junit-reporter',
             'karma-chrome-launcher',
             'karma-firefox-launcher',
-            'karma-phantomjs-launcher',
+            'karma-phantomjs2-launcher',
             'karma-jasmine'
         ],
 
