@@ -20,9 +20,9 @@ Quick and easy AngularJS module and set of directives for adding a cart into you
  <li>Send to HTTP POST</li>
  <li>Send to PayPal</li>
 </ul>
-As feaured in '<a href="https://www.packtpub.com/web-development/building-e-commerce-application-mean">Building an E-Commerce Application with MEAN</a>' 
+As feaured in '<a href="https://www.amazon.com/Building-Commerce-Application-Adrian-Mejia-ebook/dp/B014T58NDM">Building an E-Commerce Application with MEAN</a>' 
 
-<a href="https://www.packtpub.com/web-development/building-e-commerce-application-mean"><img src="https://d1ldz4te4covpm.cloudfront.net/sites/default/files/imagecache/ppv4_main_book_cover/6551OS.jpg"/></a>
+<a href="https://www.amazon.com/Building-Commerce-Application-Adrian-Mejia-ebook/dp/B014T58NDM"><img src="https://m.media-amazon.com/images/I/51LgqoHIRML.jpg" alt="Building an E-Commerce Application with MEAN" /></a>
 
 Documentation
 -----
